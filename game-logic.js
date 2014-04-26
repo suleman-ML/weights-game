@@ -28,13 +28,16 @@ var game = {
 			return ary;
 	},
 
+	level :0 ,
+
 	gameFunction : function(){
 		// params : number : the number entered by user,
 		// balanceType : where the number was entered (left / right)
 		// TODO:
 		// everytime a user enters a number in any weight
-		game.level = 1;
-		game.result =0;
+		
+		game.level+=1;
+		game.result = 0;
 		var panOne;
 		var panTwo;
 
@@ -52,8 +55,10 @@ var game = {
 
 			p1=this.generateSequence(panOne, 4, 2);
 			p2=this.generateSequence(panTwo, 3, 2);
+
 			var sequence = p1.concat(p2);
-			console.log(sequence);
+			$('#numberSet').html(sequence.join(','));
+			// console.log(sequence);
 		}
 
 		else if(this.level<=66){
@@ -129,7 +134,6 @@ var game = {
 
 		if(sum1==this.result && sum2==this.result) {
 			console.log("You WIN!!");
-			this.level++;
 			this.gameFunction();
 		}
 		else
