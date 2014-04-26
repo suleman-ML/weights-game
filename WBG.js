@@ -1,4 +1,4 @@
-var level=34;
+var level=1;
 var result;
 var panOne;
 var panTwo;
@@ -101,21 +101,21 @@ $('#numberSet').html(JSON.stringify(gameArray));
 /********** Retrieving user inputed values *****************/
 game();
 
-$(document).ready(function(){
-   $("#box1,#box2").keypress(function(event){
-    if(event.which == 32){
-        var a = $(this).val().split(' ');
-        var number = parseInt(a[a.length-1]);
-        var index = gameArray.indexOf(number);
-        if(index !== -1){
-            gameArray.splice(index,1);
-            usedArray.push(number);
-            $('#numberSet').html(JSON.stringify(gameArray));
-            $('#used').html(JSON.stringify(usedArray));
+// $(document).ready(function(){
+//    $("#box1,#box2").keypress(function(event){
+//     if(event.which == 32){
+//         var a = $(this).val().split(' ');
+//         var number = parseInt(a[a.length-1]);
+//         var index = gameArray.indexOf(number);
+//         if(index !== -1){
+//             gameArray.splice(index,1);
+//             usedArray.push(number);
+//             $('#numberSet').html(JSON.stringify(gameArray));
+//             $('#used').html(JSON.stringify(usedArray));
 
-        }
-    }
-   });
+//         }
+//     }
+// });
 $('#chk').click(function(){
     var boxOne = $('#box1').val();
     var boxTwo = $('#box2').val();
@@ -142,8 +142,5 @@ $('#chk').click(function(){
     }
     else
         console.log("naah!! Try again!! May be you havent used all the given sets");
-        
-
-
 });
-});
+// });
