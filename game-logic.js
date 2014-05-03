@@ -38,28 +38,33 @@ var game = {
 		
 		game.level+=1;
 		game.result = 0;
-		var panOne;
-		var panTwo;
 
 		if(this.level<=33){
-			panOne = parseInt(Math.random() * (50) + 11, 10);       /*(Math.random() * (max - min + 1)) + min;*/
-			panTwo = parseInt(Math.random() * (50) + 11, 10);
 
-			if(panOne%2 !== 0)
-				panOne++;
-			if(panTwo%2 !== 0)
-				panTwo++;
+			if(this.level<=10){
+				panOne = parseInt(Math.random() * (16) + 10, 10);
+				panTwo = panOne-2;
+				
+				p1=this.generateSequence(panOne, 3, 2);
+				p2=this.generateSequence(panTwo, 4, 2);
+				
+				var sequence = p1.concat(p2);
+				$('#numberSet').html(sequence.join(','));
+				
+				this.result = (panOne+panTwo)/2;
+				console.log(this.result);
 
-			this.result = (panOne+panTwo)/2;
-			console.log(this.result);
+			}
+			
+			if(this.level<=16){
 
-			p1=this.generateSequence(panOne, 4, 2);
-			p2=this.generateSequence(panTwo, 3, 2);
+			}
+			if(this.level<=24){
 
-			var sequence = p1.concat(p2);
-			$('#numberSet').html(sequence.join(','));
-			// console.log(sequence);
-		}
+			}
+			if(this.level<=33){
+
+			}
 
 		else if(this.level<=66){
 			panOne = parseInt(Math.random() * (121) + 60, 10);       /*(Math.random() * (max - min + 1)) + min;*/
