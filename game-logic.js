@@ -29,91 +29,66 @@ var game = {
 	},
 
 	level :0 ,
+	isthere : [],
 
-	gameFunction : function(){
+	numberSet : function(levelRange) {							/*(Math.random() * (max - min + 1)) + min;*/
+		game.level+=1;
+
+		panOne = parseInt(Math.random() * ((levelRange+15)-10+1) + 10, 10);
+		panTwo = panOne-2;
+								
+		p1=this.generateSequence(panOne, 4, 2);
+		p2=this.generateSequence(panTwo, 3, 2);
+
+		var sequence = p1.concat(p2);
+        $('#numberSet').html(sequence.join(','));
+							
+		this.result = (panOne+panTwo)/2;
+		// console.log(this.result);
+
+		if(game.isthere.indexOf(this.result) !== -1) {
+			game.isthere.splice(game.level-1,1);
+			game.level--;
+			return;
+		}
+
+		game.isthere.push(this.result);
+		// console.log(game.isthere);s
+	},
+
+	gameFunction : function() {
 		// params : number : the number entered by user,
 		// balanceType : where the number was entered (left / right)
 		// TODO:
 		// everytime a user enters a number in any weight
 		
-		game.level+=1;
 		game.result = 0;
 
 		if(this.level<=33){
 
 			if(this.level<=10){
-				panOne = parseInt(Math.random() * (16) + 10, 10);
-				panTwo = panOne-2;
-				
-				p1=this.generateSequence(panOne, 3, 2);
-				p2=this.generateSequence(panTwo, 4, 2);
-				
-				var sequence = p1.concat(p2);
-				$('#numberSet').html(sequence.join(','));
-				
-				this.result = (panOne+panTwo)/2;
-				console.log(this.result);
-
+				game.numberSet(10);
 			}
-			
-			if(this.level<=16){
-
+			else if(this.level<=16){
+				game.numberSet(16);
 			}
-			if(this.level<=24){
-
+			else if(this.level<=24){
+				game.numberSet(24);
 			}
-			if(this.level<=33){
-
+			else if(this.level<=33){
+				game.numberSet(33);
 			}
 
+		}
 		else if(this.level<=66){
-			panOne = parseInt(Math.random() * (121) + 60, 10);       /*(Math.random() * (max - min + 1)) + min;*/
-			panTwo = parseInt(Math.random() * (121) + 60, 10);
-
-			if(panOne%2 !== 0)
-				panOne++;
-			if(panTwo%2 !== 0)
-				panTwo++;
-
-			result = (panOne+panTwo)/2;
-
-			p1=this.generateSequence(panOne, 10, 2);
-			p2=this.generateSequence(panTwo, 10, 2);
-			var sequence = p1.concat(p2);
-			console.log(sequence);
+			game.numberSet();
 		}
 
 		else if(this.level<=99){
-			panOne = parseInt(Math.random() * (321) + 180, 10);       /*(Math.random() * (max - min + 1)) + min;*/
-			panTwo = parseInt(Math.random() * (321) + 180, 10);
-
-			if(panOne%2 !== 0)
-				panOne++;
-			if(panTwo%2 !== 0)
-				panTwo++;
-
-			result = (panOne+panTwo)/2;
-
-			p1=this.generateSequence(panOne, 15, 2);
-			p2=this.generateSequence(panTwo, 15, 2);
-			var sequence = p1.concat(p2);
-			console.log(sequence);
+			game.numberSet();
 		}
 		else if(this.level==100){
-			panOne = parseInt(Math.random() * (501) + 1000, 10);
-			panTwo = parseInt(Math.random() * (501) + 1000, 10);
-
-			if(panOne%2 !== 0)
-				panOne++;
-			if(panTwo%2 !== 0)
-				panTwo++;
-
-			result = (panOne+panTwo)/2;
-
-			p1=this.generateSequence(panOne, 20, 2);
-			p2=this.generateSequence(panTwo, 20, 2);
-			var sequence = p1.concat(p2);
-			console.log(sequence);
+			game.numberSet();
 		}
 		else {
 			console.log("Game Over!");
@@ -130,12 +105,10 @@ var game = {
 		for(var i=0; i < set1.length; i++) {
 			sum1+=set1[i];
 		}
-		console.log(sum1);
 
 		for(var i=0; i < set2.length; i++) {
 			sum2+=set2[i];
 		}
-		console.log(sum2);
 
 		if(sum1==this.result && sum2==this.result) {
 			console.log("You WIN!!");
