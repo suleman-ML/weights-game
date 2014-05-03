@@ -1,4 +1,4 @@
-<html>
+<!-- <html>
 <head>
 	<title>Weight Balancing Game</title>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
@@ -26,6 +26,62 @@
 
 	<div id="used"></div>
 	<!--<script type="text/javascript" src="WBG.js"></script>-->
+<!-- </body>
+</html>  -->
+<html>
+<head>
+	<title>Weight Balancing Game</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
+	<style>
+		body {
+			background-color: #cc3333;
+		}
+		#container {
+			margin: 50px auto;
+			padding: 20px;
+			width: 450px;
+			height: 450px;
+			background-color: #f75b68;
+			border: 1px solid #f75b68;
+			border-radius: 10px;
+			text-align: center;
+		}
+		#box1, #box2 {
+			margin: 5px;
+			padding: 3px;
+			width: 70%;
+			height: 30px;
+			border: 1px solid #f75b68;
+			border-radius: 3px;
+			font-size: 1em;
+			color: grey;
+		}
+		#equal {
+			margin: 5px auto;
+			display: block;
+		}
+		#numberSet,#result {
+			margin: 10px auto;
+			padding: 5px;
+			width: 65%;
+			height: 22px;
+			background-color: #fbadb3;
+			border: 1px solid #fbadb3;
+			border-radius: 3px;
+			font-size: 1.25em;
+			color: grey;
+		}
+	</style>	
+</head>
+<body>
+	<div id="container">
+		<input id="box1" type="text" name="pan1"><br>
+		=<br>
+		<input id="box2" type="text" name="pan2"><br>
+		<input id ="check" type="submit" value="check">
+		<div id="numberSet"></div>
+		<div id="result"></div>
+	</div>
 	<script type="text/javascript" src="game-logic.js"></script>
 </body>
 </html>

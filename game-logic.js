@@ -81,7 +81,7 @@ var game = {
 
 		}
 		else if(this.level<=66){
-			game.numberSet();
+			game.numberSet;
 		}
 
 		else if(this.level<=99){
@@ -95,28 +95,38 @@ var game = {
 		}
 	},
 
-	winCondition : function(set1,set2){
+	winCondition : function(){
 		// TODO :
 		// Check weather a game is won, lost or needs to continue
 		// should return true for win, false for continue.
 		var sum1=0;
 		var sum2=0;
 
-		for(var i=0; i < set1.length; i++) {
-			sum1+=set1[i];
+		var set1 = $('#box1').val();
+		var set2 = $('#box2').val();
+
+		var set1Arr = set1.split(',');
+		var set2Arr = set2.split(',');
+
+		for(var i=0; i < set1Arr.length; i++) {
+			sum1+=parseInt(set1Arr[i]);
 		}
 
-		for(var i=0; i < set2.length; i++) {
-			sum2+=set2[i];
+		for(var i=0; i < set2Arr.length; i++) {
+			sum2+=parseInt(set2Arr[i]);
 		}
 
 		if(sum1==this.result && sum2==this.result) {
-			console.log("You WIN!!");
+			$('#result').html("YOU WIN!!");
 			this.gameFunction();
 		}
 		else
-			console.log("naah!! Try again!! May be you havent used all the given sets");
+			$('#result').html("Try Again!!");
 	}
 };
+
+$('#check').on('click',function(){
+	game.winCondition();
+});
 
 game.gameFunction();
