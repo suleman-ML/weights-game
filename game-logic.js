@@ -28,7 +28,7 @@ var game = {
 			return ary;
 	},
 
-	level :100,
+	level :0 ,
 	isthere : [],
 
 	numberSet : function(levelRange,set1,set2,minimum) {							/*(Math.random() * (max - min + 1)) + min;*/	
@@ -115,18 +115,13 @@ var game = {
 		this.result = (panOne+panTwo)/2;
 		console.log(this.result);
 
-		if(game.isthere.indexOf(this.result) == -1)
-			game.isthere.push(this.result);
-
-		else if(game.isthere.indexOf(this.result) !== -1) {
-			game.isthere.push(this.result);
-			// console.log(game.isthere);
-			game.isthere.splice(game.isthere.length-1,1);
-			// console.log(game.isthere);
-			this.numberSet(levelRange,set1,set2,minimum);
-		}
+		game.isthere.push(this.result);
 		
-		console.log(game.isthere);
+		if(game.isthere.indexOf(this.result) !== -1) {
+			game.isthere.splice(game.level-1,1);
+			game.level--;
+			return;
+		}
 	},
 
 	gameFunction : function() {
@@ -135,10 +130,11 @@ var game = {
 		// TODO:
 		// everytime a user enters a number in any weight
 
-		game.level+=1;
+		game.level++;
+		console.log(game.level);
 		game.result = 0;
 
-		// $('#result').html("");
+		$('#result').html("");
 		$('#level').html("LEVEL : "+game.level);
 
 		
@@ -233,8 +229,11 @@ var game = {
 		if(sum1==this.result && sum2==this.result) {
 			$('#box1').val('');
 			$('#box2').val('');
-			$('#result').html("YOU WIN!!");
-			this.gameFunction();
+			$('#result').html("You have won, genius!");
+			setTimeout(function(){
+				$('#result').html('');
+				game.gameFunction();
+			},2000);
 		}
 		else
 			$('#result').html("Try Again!!");
