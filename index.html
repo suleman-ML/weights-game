@@ -30,27 +30,29 @@
 			margin: 5px auto;
 			display: block;
 		}
-		#numberSet,#result {
+		.display {
 			margin: 10px auto;
 			padding: 5px;
-			width: 65%;
+			width: 68%;
 			height: 22px;
 			background-color: #fbadb3;
 			border: 1px solid #fbadb3;
 			border-radius: 3px;
 			font-size: 1.25em;
-			color: grey;
+			color: grey
 		}
 	</style>	
 </head>
 <body>
 	<div id="container">
+		<div class="display" id="level"></div>
 		<input id="box1" type="text" name="pan1"><br>
-		=<br>
+		=
+		<br>
 		<input id="box2" type="text" name="pan2"><br>
 		<input id ="check" type="submit" value="check">
-		<div id="numberSet"></div>
-		<div id="result"></div>
+		<div class="display" id="numberSet"></div>
+		<div class="display"id="result"></div>
 	</div>
 	<script type="text/javascript" src="game-logic.js"></script>
 </body>
