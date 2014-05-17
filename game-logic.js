@@ -30,6 +30,8 @@ var game = {
 
 	level :0 ,
 	isthere : [],
+	gameArray : [],
+	usedArray : [],
 
 	numberSet : function(levelRange,set1,set2,minimum) {							/*(Math.random() * (max - min + 1)) + min;*/
 				
@@ -45,8 +47,8 @@ var game = {
 		p1=this.generateSequence(panOne,set1,minimum);
 		p2=this.generateSequence(panTwo,set2,minimum);
 
-		var sequence = p1.concat(p2);
-        $('#numberSet').html(sequence.join(','));
+		this.gameArray = p1.concat(p2);
+        $('#numberSet').html(this.gameArray.join(','));
 							
 		this.result = (panOne+panTwo)/2;
 		console.log(this.result);
@@ -66,10 +68,11 @@ var game = {
 		// TODO:
 		// everytime a user enters a number in any weight
 
-		game.level++;
-		console.log(game.level);
-		game.result = 0;
-
+		this.level++;
+		this.result = 0;
+		this.usedArray = [];
+		this.gameArray = [];
+		
 		$('#level').html("You are on level " + game.level);
 
 		if(this.level<=33){
@@ -101,6 +104,23 @@ var game = {
 		else {
 			console.log("Game Over!");
 		}
+
+		$("#box1,#box2").keypress(function(event){
+		    if(event.which == 32){
+		        var a = $(this).val().split(' ');
+		        console.log(a);
+		        var number = parseInt(a[a.length-1]);
+		        var index = game.gameArray.indexOf(number);
+		        if(index !== -1){
+		            game.gameArray.splice(index,1);
+		            game.usedArray.push(number);
+		            // console.log(game.gameArray);
+		            // console.log(game.usedArray);
+		            $('#numberSet').html(JSON.stringify(game.gameArray));
+		            $('#used').html(JSON.stringify(game.usedArray));
+		        }
+		    }
+		});
 	},
 
 	winCondition : function(){
@@ -113,15 +133,15 @@ var game = {
 		var set1 = $('#box1').val();
 		var set2 = $('#box2').val();
 
-		var set1Arr = set1.split(',');
-		var set2Arr = set2.split(',');
+		var set1Arr = set1.split(' ');
+		var set2Arr = set2.split(' ');
 
-		for(var i=0; i < set1Arr.length; i++) {
-			sum1+=parseInt(set1Arr[i]);
+		for(var i=0; i < set1Arr.length-1; i++) {
+				sum1+=parseInt(set1Arr[i]);
 		}
 
-		for(var i=0; i < set2Arr.length; i++) {
-			sum2+=parseInt(set2Arr[i]);
+		for(var i=0; i < set2Arr.length-1; i++) {
+				sum2+=parseInt(set2Arr[i]);
 		}
 
 		if(sum1==this.result && sum2==this.result) {
@@ -130,11 +150,19 @@ var game = {
 			$('#result').html("You have won, genius!");
 			setTimeout(function(){
 				$('#result').html('');
+				$('#used').html('');
 				game.gameFunction();
 			},2000);
 		}
-		else
+		else {
+			$('#box1').val('');
+			$('#box2').val('');
 			$('#result').html("Try Again!!");
+			setTimeout(function(){
+				$('#result').html('');
+				$('#used').html('');
+			},2000);
+		}
 	}
 };
 
@@ -143,3 +171,4 @@ $('#check').on('click',function(){
 });
 
 game.gameFunction();
+
