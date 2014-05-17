@@ -28,23 +28,83 @@ var game = {
 			return ary;
 	},
 
-	level :0 ,
+	level :100,
 	isthere : [],
 
-	numberSet : function(levelRange,set1,set2,minimum) {							/*(Math.random() * (max - min + 1)) + min;*/
-		
-		
-		console.log(this.level);
-		console.log(levelRange);
+	numberSet : function(levelRange,set1,set2,minimum) {							/*(Math.random() * (max - min + 1)) + min;*/	
+	console.log(this.level);
+	console.log(levelRange);
 
-		if(levelRange<=5) {
-			panOne = parseInt(Math.random() * ((levelRange+15)-10+1) + 10, 10);
+		/********************* BEGINNER STAGE **************************/
+
+		if(levelRange<=33) {
+			if(levelRange<=5) {
+				panOne = parseInt(Math.random() * ((levelRange+10)-10+1) + 10, 10);  //10-15
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=16) {
+				panOne = parseInt(Math.random() * ((levelRange+14)-20+1) + 20, 10);  //20-40
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=30) {
+				panOne = parseInt(Math.random() * ((levelRange+40)-42+1) + 42, 10);  //42-70	
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=33) {
+				panOne = parseInt(Math.random() * ((levelRange+67)-72+1) + 72, 10);  //72-100
+				panTwo = panOne-2;
+			}
+		}
+
+		/********************* PRO STAGE **************************/
+		
+		else if(levelRange<=66) {
+			if(levelRange<=38) {
+				panOne = parseInt(Math.random() * ((levelRange+82)-110+1) + 110, 10);  //110-120
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=49) {
+				panOne = parseInt(Math.random() * ((levelRange+105)-124+1) + 124, 10);  //124-154
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=63) {
+				panOne = parseInt(Math.random() * ((levelRange+137)-168+1) + 168, 10);  //168-200
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=66) {
+				panOne = parseInt(Math.random() * ((levelRange+117)-100+1) + 100, 10);  //200-230
+				panTwo = panOne-2;
+			}
+		}
+
+		/********************* FREAK STAGE **************************/
+		
+		else if(levelRange<=99) {
+			if(levelRange<=71) {
+				panOne = parseInt(Math.random() * ((levelRange+199)-240+1) + 240, 10);  //240-270
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=82) {
+				panOne = parseInt(Math.random() * ((levelRange+268)-290+1) + 290, 10);  //290-350
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=96) {
+				panOne = parseInt(Math.random() * ((levelRange+364)-380+1) + 380, 10); //380-460
+				panTwo = panOne-2;
+			}
+			else if (levelRange<=99) {
+				panOne = parseInt(Math.random() * ((levelRange+501)-500+1) + 500, 10); //500-600
+				panTwo = panOne-2;
+			}
+		}
+
+		/********************* INSANE STAGE **************************/
+		
+		else if(levelRange==100) {
+			panOne = parseInt(Math.random() * ((levelRange+1900)-1500+1) + 1500, 10);  //1500-2000
 			panTwo = panOne-2;
 		}
-		else if (levelRange<=16) {
-			panOne = parseInt(Math.random() * ((levelRange+70)-30+1) + 30, 10);
-			panTwo = panOne-2;
-		}
+		
 
 		p1=this.generateSequence(panOne,set1,minimum);
 		p2=this.generateSequence(panTwo,set2,minimum);
@@ -55,13 +115,18 @@ var game = {
 		this.result = (panOne+panTwo)/2;
 		console.log(this.result);
 
-		game.isthere.push(this.result);
-		
-		if(game.isthere.indexOf(this.result) !== -1) {
-			game.isthere.splice(game.level-1,1);
-			game.level--;
-			return;
+		if(game.isthere.indexOf(this.result) == -1)
+			game.isthere.push(this.result);
+
+		else if(game.isthere.indexOf(this.result) !== -1) {
+			game.isthere.push(this.result);
+			// console.log(game.isthere);
+			game.isthere.splice(game.isthere.length-1,1);
+			// console.log(game.isthere);
+			this.numberSet(levelRange,set1,set2,minimum);
 		}
+		
+		console.log(game.isthere);
 	},
 
 	gameFunction : function() {
@@ -73,8 +138,11 @@ var game = {
 		game.level+=1;
 		game.result = 0;
 
-		$('#result').html("");
+		// $('#result').html("");
 		$('#level').html("LEVEL : "+game.level);
+
+		
+		/************* BEGINNER STAGE ***************/
 
 		if(this.level<=33){
 
@@ -82,26 +150,60 @@ var game = {
 				game.numberSet(5,4,3,2);
 			}
 			else if(this.level<=16){
-				game.numberSet(6,5,5,2);
+				game.numberSet(16,5,5,2);
 			}
-			else if(this.level<=24){
-				game.numberSet(24);
+			else if(this.level<=30){
+				game.numberSet(30,7,8,4);
 			}
 			else if(this.level<=33){
-				game.numberSet(33);
+				game.numberSet(33,10,10,5);
+			}
+		}
+
+		/************* PRO STAGE ***************/
+
+		else if(this.level<=66){
+
+			if(this.level<=38){
+				game.numberSet(38,12,12,8);
+			}
+			else if(this.level<=49){
+				game.numberSet(49,15,15,12);
+			}
+			else if(this.level<=63){
+				game.numberSet(63,17,18,14);
+			}
+			else if(this.level<=66){
+				game.numberSet(66,20,20,16);
 			}
 
 		}
-		else if(this.level<=66){
-			game.numberSet;
-		}
+
+		/************* FREAK STAGE ***************/
 
 		else if(this.level<=99){
-			game.numberSet();
+			
+			if(this.level<=71){
+				game.numberSet(71,22,22,16);
+			}
+			else if(this.level<=82){
+				game.numberSet(82,27,28,16);
+			}
+			else if(this.level<=96){
+				game.numberSet(96,30,30,18);
+			}
+			else if(this.level<=99){
+				game.numberSet(99,35,35,20);
+			}
+
 		}
+
+		/************* INSANE STAGE ***************/
 		else if(this.level==100){
-			game.numberSet();
+			game.numberSet(100,50,50,20);
 		}
+
+		/************* GAME OVER ***************/
 		else {
 			console.log("Game Over!");
 		}
