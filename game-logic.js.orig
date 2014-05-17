@@ -30,6 +30,8 @@ var game = {
 
 	level :0 ,
 	isthere : [],
+	gameArray : [],
+	usedArray : [],
 
 	numberSet : function(levelRange,set1,set2,minimum) {							/*(Math.random() * (max - min + 1)) + min;*/	
 	console.log(this.level);
@@ -130,6 +132,14 @@ var game = {
 		// TODO:
 		// everytime a user enters a number in any weight
 
+<<<<<<< HEAD
+		this.level++;
+		this.result = 0;
+		this.usedArray = [];
+		this.gameArray = [];
+		
+		$('#level').html("You are on level " + game.level);
+=======
 		game.level++;
 		console.log(game.level);
 		game.result = 0;
@@ -139,6 +149,7 @@ var game = {
 
 		
 		/************* BEGINNER STAGE ***************/
+>>>>>>> a9f8cd36a4e45b40aef362ec3384bca98f8b3a5a
 
 		if(this.level<=33){
 
