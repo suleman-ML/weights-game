@@ -70,11 +70,11 @@ var game = {
 				panTwo = panOne-2;
 			}
 			else if (levelRange<=63) {
-				panOne = parseInt(Math.random() * ((levelRange+137)-168+1) + 168, 10);  //168-200
+				panOne = parseInt(Math.random() * ((levelRange+537)-600+1) + 600, 10);  //600-800
 				panTwo = panOne-2;
 			}
 			else if (levelRange<=66) {
-				panOne = parseInt(Math.random() * ((levelRange+117)-100+1) + 100, 10);  //200-230
+				panOne = parseInt(Math.random() * ((levelRange+1434)-1000+1) + 1000, 10);  //1000-1500
 				panTwo = panOne-2;
 			}
 		}
@@ -83,19 +83,19 @@ var game = {
 
 		else if(levelRange<=99) {
 			if(levelRange<=71) {
-				panOne = parseInt(Math.random() * ((levelRange+199)-240+1) + 240, 10);  //240-270
+				panOne = parseInt(Math.random() * ((levelRange+2229)-1800+1) + 1800, 10);  //2300-1800
 				panTwo = panOne-2;
 			}
 			else if (levelRange<=82) {
-				panOne = parseInt(Math.random() * ((levelRange+268)-290+1) + 290, 10);  //290-350
+				panOne = parseInt(Math.random() * ((levelRange+2718)-2500+1) + 2500, 10);  //2500-2800
 				panTwo = panOne-2;
 			}
 			else if (levelRange<=96) {
-				panOne = parseInt(Math.random() * ((levelRange+364)-380+1) + 380, 10); //380-460
+				panOne = parseInt(Math.random() * ((levelRange+3904)-3000+1) + 3000, 10); //3000-4000
 				panTwo = panOne-2;
 			}
 			else if (levelRange<=99) {
-				panOne = parseInt(Math.random() * ((levelRange+501)-500+1) + 500, 10); //500-600
+				panOne = parseInt(Math.random() * ((levelRange+8901)-6000+1) + 6000, 10); //6000-9000
 				panTwo = panOne-2;
 			}
 		}
@@ -103,9 +103,11 @@ var game = {
 		/********************* INSANE STAGE **************************/
 
 		else if(levelRange==100) {
-			panOne = parseInt(Math.random() * ((levelRange+1900)-1500+1) + 1500, 10);  //1500-2000
+			panOne = parseInt(Math.random() * ((levelRange+19000)-15000+1) + 15000, 10);  //15000-20000
 			panTwo = panOne-2;
 		}
+
+		/********************* GENERATING DRAGGABLE AND DROPPABLE WEIGHT SET *********************/
 
 		if(this.level<=33){
 			if(this.level<=5) {
@@ -129,6 +131,7 @@ var game = {
 				}
 			}
 		}
+
 		else if(this.level<=66){
 			if(this.level<=38) {
 				for(var i=0; i<24; i++){
@@ -146,11 +149,12 @@ var game = {
 				}
 			}
 			else if(this.level<=66) {
-				for(var i=0; i<0; i++){
+				for(var i=0; i<40; i++){
 					$(".weight-sets").append('<div class="draggable"></div>');
 				}
 			}
 		}
+
 		else if(this.level<=99){
 			if(this.level<=71) {
 				for(var i=0; i<42; i++){
@@ -173,6 +177,7 @@ var game = {
 				}
 			}
 		}
+
 		else if(this.level==100){
 			for(var i=0; i<100; i++){
 					$(".weight-sets").append('<div class="draggable"></div>');
@@ -181,6 +186,9 @@ var game = {
 
 		p1=this.generateSequence(panOne,set1,minimum);
 		p2=this.generateSequence(panTwo,set2,minimum);
+
+		this.result = (panOne+panTwo)/2;
+		console.log(this.result);
 
 		var sequence = p1.concat(p2);
 		var  j=0;
@@ -194,33 +202,36 @@ var game = {
 
 		$("#pan-one").droppable({
 
-			drop: function(event, ui) {
-				var weightAddedInPanOne = parseInt($(ui.draggable).text(),10);
-				game.totalWeightInPanOne += weightAddedInPanOne;
-				console.log("panone " + game.totalWeightInPanOne);
+			over: function(event, ui) {
+				if(typeof $(ui.draggable).attr('one') === "undefined") {
+					$(ui.draggable).attr('one','');
+					var weightAddedInPanOne = parseInt($(ui.draggable).text(),10);
+					game.totalWeightInPanOne += weightAddedInPanOne;
+					console.log("panone " + game.totalWeightInPanOne);
+				}
 			},
 			out: function(event,ui) {
+				$(ui.draggable).removeAttr('one');
 				var weightSubtractedFromPanOne = parseInt($(ui.draggable).text(),10);
 				game.totalWeightInPanOne -= weightSubtractedFromPanOne;
 			}
 		});
 
 		$("#pan-two").droppable({
-			drop: function(event, ui) {
-				var weightAddedInPanTwo = parseInt($(ui.draggable).text(),10);
-				game.totalWeightInPanTwo += weightAddedInPanTwo;
-				console.log("pantwo " + game.totalWeightInPanTwo);
+			over: function(event, ui) {
+				if(typeof $(ui.draggable).attr('two') === "undefined") {
+					$(ui.draggable).attr('two','');
+					var weightAddedInPanTwo = parseInt($(ui.draggable).text(),10);
+					game.totalWeightInPanTwo += weightAddedInPanTwo;
+					console.log("pantwo " + game.totalWeightInPanTwo);
+				}
 			},
 			out: function(event,ui) {
+				$(ui.draggable).removeAttr('two');
 				var weightSubtractedFromPanTwo = parseInt($(ui.draggable).text(),10);
 				game.totalWeightInPanTwo -= weightSubtractedFromPanTwo;
 			}
 		});
-
-        $('#numberSet').html(sequence.join(','));
-
-		this.result = (panOne+panTwo)/2;
-		console.log(this.result);
 
 		if(game.isthere.indexOf(this.result) == -1)
 			game.isthere.push(this.result);
@@ -233,12 +244,8 @@ var game = {
 	},
 
 	gameFunction : function() {
-		// params : number : the number entered by user,
-		// balanceType : where the number was entered (left / right)
-		// TODO:
-		// everytime a user enters a number in any weight
 
-		game.level++;
+		game.level++;										//Track the last level user played.
 		game.result = 0;
 
 		$('#level').html("LEVEL : "+game.level);
@@ -306,14 +313,12 @@ var game = {
 
 		/************* GAME OVER ***************/
 		else {
-			console.log("Game Over!");
+			$("#container").empty();
+			$("#container").html("GAME OVER !!!");
 		}
 	},
 
 	winCondition : function(){
-		// TODO :
-		// Check weather a game is won, lost or needs to continue
-		// should return true for win, false for continue.
 
 		if(game.totalWeightInPanOne == this.result && game.totalWeightInPanTwo==this.result) {
 
@@ -326,7 +331,7 @@ var game = {
 			setTimeout(function(){
 				$('#result').html('');
 				game.gameFunction();
-			},2000);
+			},1000);
 			return false;
 		}
 		else
@@ -334,59 +339,8 @@ var game = {
 	}
 };
 
-$('#check').on('click',function(){
+$('#check').on('click',function(){		//Track no. of times user has clicked "check" on each level.
 	game.winCondition();
 });
 
 game.gameFunction();
-
-
-
-
-
-
-
-/********** TRASH ************/
-//Windcondition : function...
-// var sum1=0;
-		// var sum2=0;
-
-		// var set1 = $('#box1').val();
-		// var set2 = $('#box2').val();
-
-		// var set1Arr = set1.split(',');
-		// var set2Arr = set2.split(',');
-
-		// for(var i=0; i < set1Arr.length; i++) {
-		// 	sum1+=parseInt(set1Arr[i]);
-		// }
-
-		// for(var i=0; i < set2Arr.length; i++) {
-		// 	sum2+=parseInt(set2Arr[i]);
-		// }
-
-		// if(sum1==this.result && sum2==this.result) {
-		// 	$('#box1').val('');
-		// 	$('#box2').val('');
-		// 	$('#result').html("You have won, genius!");
-		// 	setTimeout(function(){
-		// 		$('#result').html('');
-		// 		game.gameFunction();
-		// 	},2000);
-		// }
-		// else
-		// 	$('#result').html("Try Again!!");
-/********************************************************************/
-		// $("#pan-one").draggable({
-		// 	drag: function(event,ui) {
-		// 		weightSubtracted = parseInt($(".draggable").text(),10);
-		// 		console.log(weightSubtracted);
-		// 		game.totalWeightInPanOne -= weightSubtracted;
-		// 	}
-		// });
-		// $("#pan-two").draggable({
-		// 	drag: function(event,ui) {
-		// 		weightSubtracted = parseInt($(".draggable").text(),10);
-		// 		game.totalWeightInPanTwo -= weightSubtracted;
-		// 	}
-		// });

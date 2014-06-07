@@ -5,81 +5,92 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 	<style>
 		body {
-			background-color: #cc3333;
+			background-color: #382F2F;
 		}
 		#container {
 			margin: 50px auto;
 			padding: 20px;
 			width: 450px;
-			background-color: #f75b68;
-			border: 1px solid #f75b68;
+			background-color: #B1B11E;
 			border-radius: 10px;
 			text-align: center;
 		}
-		#box1, #box2 {
-			margin: 5px;
-			padding: 3px;
-			width: 70%;
-			height: 30px;
-			border: 1px solid #f75b68;
-			border-radius: 3px;
-			font-size: 1em;
-			color: grey;
-		}
 		#equal {
-			margin: 5px auto;
-			display: block;
+			padding : 5px;
+			display: inline-block;
+			vertical-align:  top;
+			margin-top:100px;
 		}
 		.display {
 			margin: 10px auto;
 			padding: 5px;
-			width: 68%;
+			width: 85%;
 			height: 22px;
-			background-color: #fbadb3;
-			border: 1px solid #fbadb3;
+			background-color: #404635;
 			border-radius: 3px;
 			font-size: 1.25em;
-			color: grey;
+			color: #30CDEC;
 		}
 		.draggable{
-			border: 1px solid green;
+			border: 1px solid rgb(17, 27, 17);
 			padding: 5px;
 			width: 30px;
 		}
 		.pans {
 			height: 200px;
+			width: 170px;
+			margin: 20px 0;
+			border: 3px solid #404635;
+			border-radius: 20px;
+			display : inline-block;
 		}
 
-		.pans,.weight-sets {
-			width: 180px;
-			border:1px solid #ccc;
+		.weight-sets {
+			margin-left: 20px;
+			width: 87%;
 			display : inline-block;
 		}
 		.draggable {
 			float:left;
+			padding:5px;
+			margin-right: 13px;
+			margin-bottom: 10px;
+			border-radius: 10px;
+			width: 30px;
+			cursor: pointer;
+			background-color: #3693A5;
+		}
+		#check {
+			margin:10px 0 3px 0;
+			width: 87.5%;
+			border-radius: 15px;
+			cursor: pointer;
+			background-color: #404635;
+			color: #30CDEC;
+			outline: none;
 		}
 	</style>
 </head>
 <body>
 	<div id="container">
 		<div class="display" id="level"></div>
-		<!-- <input id="box1" type="text" name="pan1"><br>
-		=
-		<br>
-		<input id="box2" type="text" name="pan2"><br>
-		<div class="display" id="numberSet"></div> -->
-
 
 		<!-- Drag and drop UI -->
-		<div id="pan-one" class="pans">
-		</div>
-		=
-		<div id="pan-two" class="pans">
-		</div>
+		<div id="pan-one" class="pans"></div>
+		<div id="equal"> = </div>
+		<div id="pan-two" class="pans"></div>
 		<div class="weight-sets"></div><br>
 		<input id ="check" type="submit" value="check">
 		<div class="display"id="result"></div>
 	</div>
 	<script type="text/javascript" src="game-logic.js"></script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-18735851-9', 'marketlytics.com');
+		ga('send', 'pageview');
+	</script>
 </body>
 </html>
