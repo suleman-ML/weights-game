@@ -25,6 +25,18 @@ var game = {
 		return ary;
 	},
 
+		shuffle: function(items) {
+			var i = items.length;
+			while (--i) {
+			  var j = Math.floor(Math.random() * (i + 1))
+			  var temp = items[i];
+			  items[i] = items[j];
+			  items[j] = temp;
+			}
+
+			return items;
+		},
+
 	level: 0 ,
 	strikeOffLevel: 21,
 	panone : 0, // total weight for Pan 1
@@ -38,21 +50,17 @@ var game = {
 	numberSet : function(level,set1,set2,minimum) {
 		game.MaxNumber += 20;
 		var previousNumber = game.resultsGenerated[game.resultsGenerated.length-1];
-		previousNumber += 20;
+		previousNumber += 41;
 		var panOne = parseInt(Math.random() * (game.MaxNumber - previousNumber + 1),10) + previousNumber;
-		var panTwo = panOne-2;
-		console.log("panone "  +  panOne);
 
 		var p1 = this.generateSequence(panOne,set1,minimum);
-		var p2 = this.generateSequence(panTwo,set2,minimum);
-		console.log(p1);
-		console.log(p2);
+		var p2 = this.generateSequence(panOne,set2,minimum);
 
-		var sequence = p1.concat(p2);
-		console.log("seq :" + sequence);
+		console.log(p1, p2);
 
-		this.result = (panOne + panTwo) / 2;
-		console.log(this.result);
+		var sequence = game.shuffle(p1.concat(p2));
+
+		this.result = panOne;
 
 		if(this.resultsGenerated.indexOf(this.result) == -1)
 			this.resultsGenerated.push(this.result);
@@ -77,7 +85,6 @@ var game = {
 				$(ui.draggable).attr('weight-in-pan') != idOfPan) {
 					$(ui.draggable).attr('weight-in-pan', idOfPan);
 					game[idOfPan] += parseInt($(ui.draggable).text(),10);
-					console.log(idOfPan,game[idOfPan]);
 				}
 			},
 			out: function(event,ui) {
