@@ -56,7 +56,7 @@ var game = {
 		var p1 = this.generateSequence(panOne,set1,minimum);
 		var p2 = this.generateSequence(panOne,set2,minimum);
 
-		console.log(p1, p2);
+		//console.log(p1, p2);
 
 		var sequence = game.shuffle(p1.concat(p2));
 
