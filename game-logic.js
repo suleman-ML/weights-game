@@ -1,9 +1,6 @@
 var game = {
 
 	generateSequence : function(number, sections, min){
-		// TODO:
-		// all the code that is required
-		// to generate a sequence.
 		var ary = [];
 		var i = 0;
 		while ( number >= 0 ) {
@@ -29,17 +26,22 @@ var game = {
 	},
 
 	level: 0 ,
+	strikeOffLevel: 21,
 	panone : 0, // total weight for Pan 1
 	pantwo : 0, // total weight for Pan 2
 	result: 0,
-	resultsGenerated : [], //stores the results generated throughout the game to maintain uniqueness
-	generateWeight: function(from, to) {
-		return parseInt(Math.random() * (to - from + 1) + from, 10); /*(Math.random() * (max - min + 1)) + min;*/
-	},
+	resultsGenerated : [0], //stores the results generated throughout the game to maintain uniqueness
+	MaxNumber : 0,
+	setOfFirstNumber : 2,
+	setOfSecondNumber : 3,
 
-	numberSet : function(levelRange,set1,set2,minimum) {
-		var panOne = game.generateWeight(levelRange * 1.5, levelRange * 3.5);
+	numberSet : function(level,set1,set2,minimum) {
+		game.MaxNumber += 20;
+		var previousNumber = game.resultsGenerated[game.resultsGenerated.length-1];
+		previousNumber += 20;
+		var panOne = parseInt(Math.random() * (game.MaxNumber - previousNumber + 1),10) + previousNumber;
 		var panTwo = panOne-2;
+		console.log("panone "  +  panOne);
 
 		var p1 = this.generateSequence(panOne,set1,minimum);
 		var p2 = this.generateSequence(panTwo,set2,minimum);
@@ -58,7 +60,8 @@ var game = {
 		else if(this.resultsGenerated.indexOf(this.result) !== -1) {
 			this.resultsGenerated.push(this.result);
 			this.resultsGenerated.splice(this.resultsGenerated.length-1,1);
-			this.numberSet(levelRange,set1,set2,minimum);
+			sequence = [];
+			this.numberSet(level,set1,set2,minimum);
 		}
 
 		for(var wIndex in sequence) {
@@ -67,7 +70,6 @@ var game = {
 
 		$(".draggable").draggable();
 		$("#panone, #pantwo").droppable({
-
 			over: function(event, ui) {
 				var idOfPan = $(this).attr('id');
 
@@ -86,26 +88,85 @@ var game = {
 		});
 	},
 
-	generateSets : function(levelRange) {
-		var set1 = 4;
-		var set2 = 3;
-		game.numberSet(levelRange,set1,set2,2);
-	},
-
 	gameFunction : function() {
 
-		game.level++;										//Track the last level user played.
-		levelRange = 5;
-		game.result = 0;
+		game.strikeOffLevel--;
+		game.level++;										//Track the last level user played
 
-		if(game.level%5 === 0)
-			levelRange += 5;
+		if(game.level == 21) {
+			game.gameOver();
+		}
+		game.numberSet(game.level,game.setOfFirstNumber,game.setOfSecondNumber,2);
 
+		game.setOfFirstNumber += 1;
+		game.setOfSecondNumber += 1;
+
+		$("#strike-off").html(game.strikeOffLevel);
 		$('#level').html("LEVEL : " + game.level);
+	},
 
-		game.generateSets(levelRange);
+	winCondition : function(){
 
-		/************* BEGINNER STAGE ***************/
+		if(game.panone == this.result && game.pantwo==this.result) {
+
+			game.panone = 0;
+			game.pantwo = 0;
+
+			$('#result').html("You Won!!");
+			$('.draggable').remove();
+
+			setTimeout(function(){
+				$('#result').html('');
+				game.gameFunction();
+			},1000);
+			return false;
+		}
+		else
+			$('#result').html("Try Again!");
+	},
+
+	gameOver : function () {
+		var endingNote = "Thanks for playing, please send your feedback at Martketlytics.";
+		$("#container").html(endingNote);
+	},
+};
+
+$('#check').click(function() {		//Track no. of times user has clicked "check" on each level.
+	game.winCondition();
+});
+$("#reset").click(function () {
+    $(".draggable").animate({
+        top: "0px",
+        left: "0px"
+    });
+    game.panone = 0;
+    game.pantwo = 0;
+});
+game.gameFunction();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// generateSets : function(level) {
+	// 	var set1 = 2;
+	// 	var set2 = 1;
+	// 	game.numberSet(glevel,set1,set2,2);
+	// },
+	// generateWeight: function(from, to) {
+	// 	return parseInt(Math.random() * (to - from + 1) + from, 10); /*(Math.random() * (max - min + 1)) + min;*/
+	// },
+	/************* BEGINNER STAGE ***************/
 
 		// if(this.level<=33){
 
@@ -169,32 +230,3 @@ var game = {
 		// 	$("#container").empty();
 		// 	$("#container").html("GAME OVER !!!");
 		// }
-	},
-
-	winCondition : function(){
-
-		if(game.panone == this.result && game.pantwo==this.result) {
-
-			game.panone = 0;
-			game.pantwo = 0;
-
-			$('#result').html("You Won!!");
-			$('.draggable').remove();
-			$('.draggable').remove();
-
-			setTimeout(function(){
-				$('#result').html('');
-				game.gameFunction();
-			},1000);
-			return false;
-		}
-		else
-			$('#result').html("Try Again!");
-	}
-};
-
-$('#check').on('click',function(){		//Track no. of times user has clicked "check" on each level.
-	game.winCondition();
-});
-
-game.gameFunction();
