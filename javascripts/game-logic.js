@@ -25,17 +25,17 @@ var game = {
 		return ary;
 	},
 
-		shuffle: function(items) {
-			var i = items.length;
-			while (--i) {
-			  var j = Math.floor(Math.random() * (i + 1))
-			  var temp = items[i];
-			  items[i] = items[j];
-			  items[j] = temp;
-			}
+	shuffle: function(items) {
+		var i = items.length;
+		while (--i) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = items[i];
+			items[i] = items[j];
+			items[j] = temp;
+		}
 
-			return items;
-		},
+		return items;
+	},
 
 	level: 0 ,
 	strikeOffLevel: 21,
@@ -56,11 +56,12 @@ var game = {
 		var p1 = this.generateSequence(panOne,set1,minimum);
 		var p2 = this.generateSequence(panOne,set2,minimum);
 
-		//console.log(p1, p2);
+		console.log(p1, p2);
 
 		var sequence = game.shuffle(p1.concat(p2));
 
 		this.result = panOne;
+		console.log(this.result);
 
 		if(this.resultsGenerated.indexOf(this.result) == -1)
 			this.resultsGenerated.push(this.result);
@@ -84,13 +85,11 @@ var game = {
 				if(typeof $(ui.draggable).attr('weight-in-pan') === "undefined" ||
 				$(ui.draggable).attr('weight-in-pan') != idOfPan) {
 					$(ui.draggable).attr('weight-in-pan', idOfPan);
-					game[idOfPan] += parseInt($(ui.draggable).text(),10);
 				}
 			},
 			out: function(event,ui) {
 				var idOfPan = $(this).attr('id');
 				$(ui.draggable).removeAttr('weight-in-pan');
-				game[idOfPan] -= parseInt($(ui.draggable).text(),10);
 			}
 		});
 	},
@@ -114,6 +113,21 @@ var game = {
 
 	winCondition : function(){
 
+		var totalWeightInPanOne = [];
+		var totalWeightInPanTwo = [];
+
+
+		$('[weight-in-pan=panone]').each(function(){
+			game.panone +=  parseInt($(this).text(),10);
+		});
+
+		$('[weight-in-pan=pantwo]').each(function(){
+			game.pantwo += parseInt($(this).text(),10);
+		});
+
+		// console.log(game.panone);
+		// console.log(game.pantwo);
+
 		if(game.panone == this.result && game.pantwo==this.result) {
 
 			game.panone = 0;
@@ -128,8 +142,11 @@ var game = {
 			},1000);
 			return false;
 		}
-		else
+		else {
+			game.panone = 0;
+			game.pantwo = 0;
 			$('#result').html("Try Again!");
+		}
 	},
 
 	gameOver : function () {
