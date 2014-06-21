@@ -39,8 +39,6 @@ var game = {
 
 	level: 0 ,
 	strikeOffLevel: 21,
-	panone : 0, // total weight for Pan 1
-	pantwo : 0, // total weight for Pan 2
 	result: 0,
 	resultsGenerated : [0], //stores the results generated throughout the game to maintain uniqueness
 	MaxNumber : 0,
@@ -55,11 +53,9 @@ var game = {
 
 		var p1 = this.generateSequence(panOne,set1,minimum);
 		var p2 = this.generateSequence(panOne,set2,minimum);
-
-		console.log(p1, p2);
-
+		console.log(p1);
+		console.log(p2);
 		var sequence = game.shuffle(p1.concat(p2));
-
 		this.result = panOne;
 		console.log(this.result);
 
@@ -95,7 +91,6 @@ var game = {
 	},
 
 	gameFunction : function() {
-
 		game.strikeOffLevel--;
 		game.level++;										//Track the last level user played
 
@@ -113,25 +108,18 @@ var game = {
 
 	winCondition : function(){
 
-		var totalWeightInPanOne = [];
-		var totalWeightInPanTwo = [];
-
+		var panone = 0;
+		var pantwo = 0;
 
 		$('[weight-in-pan=panone]').each(function(){
-			game.panone +=  parseInt($(this).text(),10);
+			panone +=  parseInt($(this).text(),10);
 		});
 
 		$('[weight-in-pan=pantwo]').each(function(){
-			game.pantwo += parseInt($(this).text(),10);
+			pantwo += parseInt($(this).text(),10);
 		});
 
-		// console.log(game.panone);
-		// console.log(game.pantwo);
-
-		if(game.panone == this.result && game.pantwo==this.result) {
-
-			game.panone = 0;
-			game.pantwo = 0;
+		if(panone == this.result && pantwo == this.result) {
 
 			$('#result').html("You Won!!");
 			$('.draggable').remove();
@@ -142,9 +130,9 @@ var game = {
 			},1000);
 			return false;
 		}
-		else {
-			game.panone = 0;
-			game.pantwo = 0;
+		else{
+			panone = 0;
+			pantwo = 0;
 			$('#result').html("Try Again!");
 		}
 	},
@@ -163,8 +151,6 @@ $("#reset").click(function () {
         top: "0px",
         left: "0px"
     });
-    game.panone = 0;
-    game.pantwo = 0;
 });
 game.gameFunction();
 
