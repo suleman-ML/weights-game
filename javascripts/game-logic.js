@@ -25,27 +25,27 @@ var game = {
 		return ary;
 	},
 
-		shuffle: function(items) {
-			var i = items.length;
-			while (--i) {
-			  var j = Math.floor(Math.random() * (i + 1))
-			  var temp = items[i];
-			  items[i] = items[j];
-			  items[j] = temp;
-			}
+	shuffle: function(items) {
+		var i = items.length;
+		while (--i) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = items[i];
+			items[i] = items[j];
+			items[j] = temp;
+		}
 
-			return items;
-		},
+		return items;
+	},
 
-	level: 0 ,
+	level: 0,
 	strikeOffLevel: 21,
-	panone : 0, // total weight for Pan 1
-	pantwo : 0, // total weight for Pan 2
 	result: 0,
 	resultsGenerated : [0], //stores the results generated throughout the game to maintain uniqueness
 	MaxNumber : 0,
 	setOfFirstNumber : 2,
 	setOfSecondNumber : 3,
+	totalWeightInPanOne : 0,
+	totalWeightInPanTwo : 0,
 
 	numberSet : function(level,set1,set2,minimum) {
 		game.MaxNumber += 20;
@@ -56,10 +56,7 @@ var game = {
 		var p1 = this.generateSequence(panOne,set1,minimum);
 		var p2 = this.generateSequence(panOne,set2,minimum);
 
-		//console.log(p1, p2);
-
 		var sequence = game.shuffle(p1.concat(p2));
-
 		this.result = panOne;
 
 		if(this.resultsGenerated.indexOf(this.result) == -1)
@@ -73,30 +70,18 @@ var game = {
 		}
 
 		for(var wIndex in sequence) {
-			$(".weight-sets").append('<div class="draggable">' + sequence[wIndex] + '</div>');
+			$(".weight-sets").append('<div class="draggable"><span>' + sequence[wIndex] + '</span></div>');
 		}
 
-		$(".draggable").draggable();
+		$(".draggable").draggable({
+			revert : "invalid"
+		});
 		$("#panone, #pantwo").droppable({
-			over: function(event, ui) {
-				var idOfPan = $(this).attr('id');
-
-				if(typeof $(ui.draggable).attr('weight-in-pan') === "undefined" ||
-				$(ui.draggable).attr('weight-in-pan') != idOfPan) {
-					$(ui.draggable).attr('weight-in-pan', idOfPan);
-					game[idOfPan] += parseInt($(ui.draggable).text(),10);
-				}
-			},
-			out: function(event,ui) {
-				var idOfPan = $(this).attr('id');
-				$(ui.draggable).removeAttr('weight-in-pan');
-				game[idOfPan] -= parseInt($(ui.draggable).text(),10);
-			}
+			tolerance : "fit"
 		});
 	},
 
 	gameFunction : function() {
-
 		game.strikeOffLevel--;
 		game.level++;										//Track the last level user played
 
@@ -109,33 +94,78 @@ var game = {
 		game.setOfSecondNumber += 1;
 
 		$("#strike-off").html(game.strikeOffLevel);
-		$('#level').html("LEVEL : " + game.level);
+		$('#level').html("LEVEL : " + game.level + '<p> Timer : <span id="timer"></span></p>');
+	},
+
+	sumUpTheWeightsInPans : function() {
+
+		var panOneWeights = [];
+		var panTwoWeights = [];
+
+		var panOneLeftBorder = $('#panone').offset().left;
+		var panOneRightBorder = $('#panone').offset().left + $('#panone').outerWidth();
+		var panOneTopBorder = $('#panone').offset().top;
+		var panOneBottomBorder = $('#panone').offset().top + $('#panone').outerHeight();
+
+		var panTwoLeftBorder = $('#pantwo').offset().left;
+		var panTwoRightBorder = $('#pantwo').offset().left + $('#pantwo').outerWidth();
+		var panTwoTopBorder = $('#pantwo').offset().top;
+		var panTwoBottomBorder = $('#pantwo').offset().top + $('#pantwo').outerHeight();
+
+		var draggableWidth = $('.draggable').outerWidth();
+		var draggableHeight = $('.draggable').outerHeight();
+
+
+		$(".draggable").each(function(){
+			if(($(this).offset().left > panOneLeftBorder) && ($(this).offset().left + draggableWidth < panOneRightBorder)) {
+				if(($(this).offset().top > panOneTopBorder) && ($(this).offset().top + draggableHeight < panOneBottomBorder))
+					panOneWeights.push(parseInt($(this).text(),10));
+			}
+			else if (($(this).offset().left + draggableWidth > panOneRightBorder) && ($(this).offset().left > panTwoLeftBorder) && ($(this).offset().left + draggableWidth < panTwoRightBorder)) {
+				if(($(this).offset().top > panTwoTopBorder) && ($(this).offset().top + draggableHeight < panTwoBottomBorder))
+					panTwoWeights.push(parseInt($(this).text(),10));
+			}
+		});
+
+		for(var i=0; i < panOneWeights.length; i++) {
+			game.totalWeightInPanOne += panOneWeights[i];
+		}
+
+		for(var j=0; j < panTwoWeights.length; j++) {
+			game.totalWeightInPanTwo += panTwoWeights[j];
+		}
 	},
 
 	winCondition : function(){
 
-		if(game.panone == this.result && game.pantwo==this.result) {
+		game.sumUpTheWeightsInPans();
 
-			game.panone = 0;
-			game.pantwo = 0;
+		if(game.totalWeightInPanOne == this.result && game.totalWeightInPanTwo == this.result) {
 
-			$('#result').html("You Won!!");
+			$('#result').html("Nice!!");
 			$('.draggable').remove();
 
 			setTimeout(function(){
 				$('#result').html('');
 				game.gameFunction();
 			},1000);
-			return false;
+
 		}
-		else
+		else{
+			game.totalWeightInPanOne = 0;
+			game.totalWeightInPanTwo = 0;
 			$('#result').html("Try Again!");
+			setTimeout(function(){
+				$('#result').html('');
+			},1000);
+		}
 	},
 
 	gameOver : function () {
 		var endingNote = "Thanks for playing, please send your feedback at Martketlytics.";
 		$("#container").html(endingNote);
 	},
+
 };
 
 $('#check').click(function() {		//Track no. of times user has clicked "check" on each level.
@@ -146,94 +176,5 @@ $("#reset").click(function () {
         top: "0px",
         left: "0px"
     });
-    game.panone = 0;
-    game.pantwo = 0;
 });
 game.gameFunction();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// generateSets : function(level) {
-	// 	var set1 = 2;
-	// 	var set2 = 1;
-	// 	game.numberSet(glevel,set1,set2,2);
-	// },
-	// generateWeight: function(from, to) {
-	// 	return parseInt(Math.random() * (to - from + 1) + from, 10); /*(Math.random() * (max - min + 1)) + min;*/
-	// },
-	/************* BEGINNER STAGE ***************/
-
-		// if(this.level<=33){
-
-		// if(this.level<=5){
-		//	game.numberSet(5,4,3,2);
-		// }
-		// else if(this.level<=16){
-		//	game.numberSet(16,5,5,2);
-		// }
-		// else if(this.level<=30){
-		//	game.numberSet(30,7,8,4);
-		// }
-		// else if(this.level<=33){
-		//	game.numberSet(33,10,10,5);
-		// }
-		// }
-
-		/************* PRO STAGE ***************/
-
-		// else if(this.level<=66){
-
-		// 	if(this.level<=38){
-		// 		game.numberSet(38,12,12,8);
-		// 	}
-		// 	else if(this.level<=49){
-		// 		game.numberSet(49,15,15,12);
-		// 	}
-		// 	else if(this.level<=63){
-		// 		game.numberSet(63,17,18,14);
-		// 	}
-		// 	else if(this.level<=66){
-		// 		game.numberSet(66,20,20,16);
-		// 	}
-		// }
-
-		/************* FREAK STAGE ***************/
-
-		// else if(this.level<=99){
-
-		// 	if(this.level<=71){
-		// 		game.numberSet(71,22,22,16);
-		// 	}
-		// 	else if(this.level<=82){
-		// 		game.numberSet(82,27,28,16);
-		// 	}
-		// 	else if(this.level<=96){
-		// 		game.numberSet(96,30,30,18);
-		// 	}
-		// 	else if(this.level<=99){
-		// 		game.numberSet(99,35,35,20);
-		// 	}
-		// }
-
-		/************* INSANE STAGE ***************/
-		// else if(this.level==100){
-		// game.numberSet(100,50,50,20);
-		// }
-
-		/************* GAME OVER ***************/
-		// else {
-		// 	$("#container").empty();
-		// 	$("#container").html("GAME OVER !!!");
-		// }
