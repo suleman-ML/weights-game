@@ -101,7 +101,7 @@ var game = {
 
 		game.totalWeightInPanTwo = 0;
 		game.totalWeightInPanOne = 0;
-		
+
 		var panOneWeights = [];
 		var panTwoWeights = [];
 
@@ -120,12 +120,12 @@ var game = {
 
 
 		$(".draggable").each(function(){
-			if(($(this).offset().left > panOneLeftBorder) && ($(this).offset().left + draggableWidth < panOneRightBorder)) {
-				if(($(this).offset().top > panOneTopBorder) && ($(this).offset().top + draggableHeight < panOneBottomBorder))
+			if(($(this).offset().left >= panOneLeftBorder) && ($(this).offset().left + draggableWidth <= panOneRightBorder)) {
+				if(($(this).offset().top >= panOneTopBorder) && ($(this).offset().top + draggableHeight <= panOneBottomBorder))
 					panOneWeights.push(parseInt($(this).text(),10));
 			}
-			else if (($(this).offset().left + draggableWidth > panOneRightBorder) && ($(this).offset().left > panTwoLeftBorder) && ($(this).offset().left + draggableWidth < panTwoRightBorder)) {
-				if(($(this).offset().top > panTwoTopBorder) && ($(this).offset().top + draggableHeight < panTwoBottomBorder))
+			else if (($(this).offset().left + draggableWidth >= panOneRightBorder) && ($(this).offset().left >= panTwoLeftBorder) && ($(this).offset().left + draggableWidth <= panTwoRightBorder)) {
+				if(($(this).offset().top >= panTwoTopBorder) && ($(this).offset().top + draggableHeight <= panTwoBottomBorder))
 					panTwoWeights.push(parseInt($(this).text(),10));
 			}
 		});
@@ -144,7 +144,7 @@ var game = {
 		game.sumUpTheWeightsInPans();
 
 		if(game.totalWeightInPanOne == this.result && game.totalWeightInPanTwo == this.result) {
-			
+
 			$('#result').html("Yes, Perfect!");
 			$('.draggable').remove();
 
@@ -163,8 +163,13 @@ var game = {
 	},
 
 	gameOver : function () {
-		var endingNote = "Thanks for playing, please send your feedback at Martketlytics.";
-		$("#game").html('<p id="exit">' + endingNote + '</p>');
+
+		var result = $('#timer').text();
+
+		var endingNote = $('<p class="exit" id="final-score"> Your final score is: '+ result +'</p>'+
+                           '<p class="exit"> Thank you for playing.Please give us your feedback'+
+                           '<a style="text-decoration:none" href="https://docs.google.com/a/marketlytics.com/forms/d/14coSTujPJe1tzYsBbKaAq3HeaZn5hvA-PDf6lybn0JE/viewform?usp=send_form"> here. </a></p>');
+		$("#game").html(endingNote);
 	},
 
 };

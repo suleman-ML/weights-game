@@ -53,7 +53,7 @@
       #level,#time_set {
         display: inline-block;
         border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px; 
+        border-bottom-left-radius: 3px;
         color: #565656;
         background-color: #f7ca18;
         margin: 0 1% 0 5%;
@@ -65,11 +65,11 @@
         text-transform: uppercase;
       }
 
-      #Time_set {
+      #time_set {
         width: 27%;
         margin: 0 3% 0 9%;
         border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px; 
+        border-bottom-left-radius: 0px;
         border-top-right-radius: 3px;
         border-bottom-right-radius: 3px;
       }
@@ -190,9 +190,14 @@
           text-align: center;
         }
 
-        #instruction,#exit {
+        #instruction,.exit {
           font-weight: 900;
+          color:black;
           text-align: center;
+        }
+
+        #final-score {
+          color: rgb(20, 80, 156);
         }
 
 
@@ -222,14 +227,14 @@
 
         <div id="strike-off"></div>
         <div id="level"></div>
-        <p id = "Time_set"> Timer : <span id="timer"></span></p>
+        <p id = "time_set"> Timer : <span id="timer"></span></p>
         <div id="reset">
           <span>Reset</span>
         </div>
 
       </div>
-      
-      
+
+
       <div id="scale">
         <div id="panone"></div>
         <div id="pantwo"></div>
