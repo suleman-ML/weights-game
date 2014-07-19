@@ -170,6 +170,7 @@ var game = {
                            '<p class="exit"> Thank you for playing.Please give us your feedback'+
                            '<a style="text-decoration:none" href="https://docs.google.com/a/marketlytics.com/forms/d/14coSTujPJe1tzYsBbKaAq3HeaZn5hvA-PDf6lybn0JE/viewform?usp=send_form"> here. </a></p>');
 		$("#game").html(endingNote);
+		$("#instruction").hide();
 	},
 
 };
