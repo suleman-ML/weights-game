@@ -38,7 +38,7 @@ var game = {
 	},
 
 	level: 0,
-	strikeOffLevel: 21,
+	strikeOffLevel: 20,
 	result: 0,
 	resultsGenerated : [0], //stores the results generated throughout the game to maintain uniqueness
 	MaxNumber : 0,
@@ -76,7 +76,7 @@ var game = {
 		$(".draggable").draggable({
 			revert : "invalid"
 		});
-		$("#panone, #pantwo").droppable({
+		$("#panone, #pantwo, .weight-sets").droppable({
 			tolerance : "fit"
 		});
 	},
@@ -85,7 +85,7 @@ var game = {
 		game.strikeOffLevel--;
 		game.level++;										//Track the last level user played
 
-		if(game.level == 21) {
+		if(game.level === 21) {
 			game.gameOver();
 		}
 		game.numberSet(game.level,game.setOfFirstNumber,game.setOfSecondNumber,2);
@@ -94,11 +94,14 @@ var game = {
 		game.setOfSecondNumber += 1;
 
 		$("#strike-off").html(game.strikeOffLevel);
-		$('#level').html("LEVEL : " + game.level + '<p> Timer : <span id="timer"></span></p>');
+		$('#level').html("LEVEL : " + game.level);
 	},
 
 	sumUpTheWeightsInPans : function() {
 
+		game.totalWeightInPanTwo = 0;
+		game.totalWeightInPanOne = 0;
+		
 		var panOneWeights = [];
 		var panTwoWeights = [];
 
@@ -141,8 +144,8 @@ var game = {
 		game.sumUpTheWeightsInPans();
 
 		if(game.totalWeightInPanOne == this.result && game.totalWeightInPanTwo == this.result) {
-
-			$('#result').html("Nice!!");
+			
+			$('#result').html("Yes, Perfect!");
 			$('.draggable').remove();
 
 			setTimeout(function(){
@@ -152,9 +155,7 @@ var game = {
 
 		}
 		else{
-			game.totalWeightInPanOne = 0;
-			game.totalWeightInPanTwo = 0;
-			$('#result').html("Try Again!");
+			$('#result').html("Nope..");
 			setTimeout(function(){
 				$('#result').html('');
 			},1000);
@@ -163,7 +164,7 @@ var game = {
 
 	gameOver : function () {
 		var endingNote = "Thanks for playing, please send your feedback at Martketlytics.";
-		$("#container").html(endingNote);
+		$("#game").html('<p id="exit">' + endingNote + '</p>');
 	},
 
 };

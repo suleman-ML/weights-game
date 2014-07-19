@@ -50,32 +50,35 @@
         font-size: 0;
       }
 
-      #level {
+      #level,#time_set {
         display: inline-block;
-        border-radius: 3px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px; 
         color: #565656;
         background-color: #f7ca18;
-        margin: 0 5%;
+        margin: 0 1% 0 5%;
         padding: 10px 0;
-        font-size: 20px;
+        font-size: 17px;
         text-align: center;
-        position: relative;
-        width: 60%;
+        width: 25%;
         font-weight: bold;
         text-transform: uppercase;
       }
-      #level p {
-        position: absolute;
-        display: inline-block;
-        margin: 0px;
-        right: 10px;
+
+      #Time_set {
+        width: 27%;
+        margin: 0 3% 0 9%;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px; 
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
       }
 
       #strike-off, #reset {
         display: inline-block;
         background-color: #565656;
         color: #f7ca18;
-        font-size: 20px;
+        font-size: 17px;
         border-radius: 3px;
         text-align: center;
         width: 15%;
@@ -118,6 +121,7 @@
         padding: 15px 10px;
         border-radius: 5px;
         margin-top: 30px;
+        height: 40px;
         text-align: center;
       }
 
@@ -143,7 +147,7 @@
 
       #check {
           margin: 20px auto 3px;
-          width: 10%;
+          width: 15%;
           border: none;
           border-radius: 3px;
           cursor: pointer;
@@ -158,19 +162,19 @@
 
         @media (max-width: 800px ) {
           #check {
-            width: 12%;
+            width: 18%;
           }
         }
 
         @media (max-width: 650px ) {
           #check {
-            width: 15%;
+            width: 21%;
           }
         }
 
         @media (max-width: 550px ) {
           #check {
-            width: 20%;
+            width: 26%;
           }
         }
 
@@ -182,9 +186,14 @@
           font-size: 20px;
         }
 
-      #social {
-        text-align: center;
-      }
+        #social {
+          text-align: center;
+        }
+
+        #instruction,#exit {
+          font-weight: 900;
+          text-align: center;
+        }
 
 
     </style>
@@ -203,7 +212,7 @@
 
       <h2>If you possibly can</h2>
 
-      <p>HOW TO PLAY: Drop weights on to the pans and balance them.</p>
+      <p id="instruction">HOW TO PLAY: Drop weights on to the pans and balance them.</p>
 
     </header>
 
@@ -212,26 +221,18 @@
       <div id="progress">
 
         <div id="strike-off"></div>
-
         <div id="level"></div>
-
+        <p id = "Time_set"> Timer : <span id="timer"></span></p>
         <div id="reset">
-
           <span>Reset</span>
-
         </div>
 
       </div>
-
+      
+      
       <div id="scale">
-
-        <div id="panone" class="ui-droppable">
-
-        </div>
-
-        <div id="pantwo" class="ui-droppable">
-
-        </div>
+        <div id="panone"></div>
+        <div id="pantwo"></div>
 
         <div id="base">
 
@@ -243,7 +244,7 @@
 
       </div>
 
-      <input id ="check" type="submit" value="Check">
+      <input id ="check" type="submit" value="All Set??">
         <div class="display" id="result"></div>
 
       <div id="social">
